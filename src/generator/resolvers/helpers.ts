@@ -28,7 +28,7 @@ export function generateCrudResolverClassMethodDeclaration(
         name: "ctx",
         // TODO: import custom `ContextType`
         type: "any",
-        decorators: [{ name: "TypeGraphQL.Ctx", arguments: [] }],
+        decorators: [{ name: "TypeGraphQL.Context", arguments: [] }],
       },
       ...(action.kind === DMMF.ModelAction.aggregate ||
       action.kind === DMMF.ModelAction.groupBy

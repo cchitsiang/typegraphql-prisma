@@ -21,7 +21,7 @@ import { GenerateCodeOptions } from "./options";
 
 export function generateTypeGraphQLImport(sourceFile: SourceFile) {
   sourceFile.addImportDeclaration({
-    moduleSpecifier: "type-graphql",
+    moduleSpecifier: "@nestjs/graphql",
     namespaceImport: "TypeGraphQL",
   });
 }
@@ -196,12 +196,16 @@ export function generateIndexFile(
 
   sourceFile.addImportDeclarations([
     {
-      moduleSpecifier: `type-graphql`,
-      namedImports: ["NonEmptyArray"],
-    },
-    {
       moduleSpecifier: `./${resolversFolderName}/${crudResolversFolderName}/resolvers-crud.index`,
       namespaceImport: "crudResolversImport",
+    },
+    {
+      moduleSpecifier: `@nestjs/common`,
+      namedImports: ["Provider"],
+    },
+    {
+      moduleSpecifier: `type-graphql`,
+      namedImports: ["NonEmptyArray"],
     },
     ...(hasSomeRelations
       ? [
@@ -219,7 +223,7 @@ export function generateIndexFile(
     declarations: [
       {
         name: "crudResolvers",
-        initializer: `Object.values(crudResolversImport) as unknown as NonEmptyArray<Function>`,
+        initializer: `Object.values(crudResolversImport) as Provider[]`,
       },
     ],
   });
@@ -236,19 +240,6 @@ export function generateIndexFile(
       ],
     });
   }
-
-  sourceFile.addVariableStatement({
-    isExported: true,
-    declarationKind: VariableDeclarationKind.Const,
-    declarations: [
-      {
-        name: "resolvers",
-        initializer: `[...crudResolvers${
-          hasSomeRelations ? ", ...relationResolvers" : ""
-        }] as unknown as NonEmptyArray<Function>`,
-      },
-    ],
-  });
 }
 
 export function generateResolversBarrelFile(

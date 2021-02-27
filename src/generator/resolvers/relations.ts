@@ -104,7 +104,7 @@ export default function generateRelationsResolverClassesFromModel(
           returnType: `Promise<${field.fieldTSType}>`,
           decorators: [
             {
-              name: "TypeGraphQL.FieldResolver",
+              name: "TypeGraphQL.ResolveField",
               arguments: [
                 `_type => ${field.typeGraphQLType}`,
                 Writers.object({
@@ -124,7 +124,7 @@ export default function generateRelationsResolverClassesFromModel(
               name: "ctx",
               // TODO: import custom `ContextType`
               type: "any",
-              decorators: [{ name: "TypeGraphQL.Ctx", arguments: [] }],
+              decorators: [{ name: "TypeGraphQL.Context", arguments: [] }],
             },
             ...(!field.argsTypeName
               ? []
